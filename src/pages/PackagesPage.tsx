@@ -7,7 +7,7 @@ import { Button } from '../components/ui/Button';
 import { EmptyState } from '../components/ui/EmptyState';
 import { MOCK_PACKAGES } from '../data/packages';
 import type { Package } from '../types/package';
-import { Plus, FileText, Package as PackageIcon } from 'lucide-react';
+import { Plus, Package as PackageIcon } from 'lucide-react';
 import { generatePackagePDF } from '../utils/generatePackagePDF';
 
 /**
@@ -77,16 +77,11 @@ const PackagesPage: React.FC = () => {
       {filteredPackages.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPackages.map((pkg) => (
-            <div key={pkg.id} className="relative group">
-              <PackageCard packageData={pkg} />
-              <button
-                onClick={() => handleExportSingle(pkg)}
-                className="absolute top-3 left-3 h-8 w-8 rounded-lg bg-white/90 dark:bg-black/50 backdrop-blur-md border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary transition-all opacity-0 group-hover:opacity-100 shadow-sm"
-                title="Export Package PDF"
-              >
-                <FileText className="h-4 w-4" />
-              </button>
-            </div>
+            <PackageCard 
+              key={pkg.id} 
+              packageData={pkg} 
+              onExport={handleExportSingle}
+            />
           ))}
         </div>
       ) : (

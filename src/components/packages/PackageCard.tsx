@@ -1,18 +1,20 @@
 import React from 'react';
 import type { Package } from '../../types/package';
 import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
 import { StatusBadge } from './StatusBadge';
-import { MapPin, Clock, Tag } from 'lucide-react';
+import { MapPin, Clock, Tag, FileText } from 'lucide-react';
 
 interface PackageCardProps {
   packageData: Package;
+  onExport?: (pkg: Package) => void;
 }
 
 /**
  * PackageCard component.
  * Displays package details with a clean B2B SaaS aesthetic.
  */
-export const PackageCard: React.FC<PackageCardProps> = ({ packageData }) => {
+export const PackageCard: React.FC<PackageCardProps> = ({ packageData, onExport }) => {
   const { 
     name, 
     destination, 
@@ -81,17 +83,32 @@ export const PackageCard: React.FC<PackageCardProps> = ({ packageData }) => {
         </div>
 
         {/* Footer / Action area */}
-        <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Starting from</span>
-            <div className="flex items-center text-primary font-bold">
-              <span className="text-xl">{price.toLocaleString()}</span>
-              <span className="text-xs ml-1 font-medium">{currency}</span>
+        <div className="mt-auto pt-4 border-t border-border/50 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Starting from</span>
+              <div className="flex items-center text-primary font-bold">
+                <span className="text-xl">{price.toLocaleString()}</span>
+                <span className="text-xs ml-1 font-medium">{currency}</span>
+              </div>
             </div>
+            <Button size="sm">
+              Details
+            </Button>
           </div>
-          <button className="h-9 px-4 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all active:scale-95">
-            View Details
-          </button>
+          
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            className="w-full h-8 text-[10px] font-bold uppercase tracking-wider"
+            onClick={(e) => {
+              e.stopPropagation();
+              onExport?.(packageData);
+            }}
+          >
+            <FileText className="mr-2 h-3 w-3" />
+            Export PDF Report
+          </Button>
         </div>
       </div>
     </Card>
